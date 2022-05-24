@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
     <Grid Background="Yellow">
-        <Label Content="{Binding Note.Name}" />
-        <TextBlock Text="{Binding Note.Description}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="{Binding Name}" />
+        <TextBlock Grid.Row="1" Height="Auto" Text="{Binding Content}" />
     </Grid>
 </UserControl>
