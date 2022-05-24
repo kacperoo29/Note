@@ -1,4 +1,5 @@
 ﻿using PNote.Core;
+using PNote.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,11 +22,11 @@ namespace PNote
     {
         private readonly INoteService _noteService;
 
-        public MainWindow()
+        public MainWindow(INoteService noteService)
         {
             InitializeComponent();
 
-            this._noteService = new NoteService();
+            this._noteService = noteService;
 
             this.NoteListView.ItemsSource = this._noteService.GetNotes();
             this.NoteListView.MouseDoubleClick += NoteListView_MouseDoubleClick;
