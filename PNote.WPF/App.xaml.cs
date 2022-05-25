@@ -24,7 +24,13 @@ namespace PNote
 
             using var scope = this._serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<PNoteDbContext>();
-            dbContext.Database.Migrate();
+            try
+            {
+                dbContext.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         private void ConfigureServices(IServiceCollection services)

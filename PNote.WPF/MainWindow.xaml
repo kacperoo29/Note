@@ -40,9 +40,9 @@
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Row="1">
-                <Button>Add</Button>
-                <Button>Edit</Button>
-                <Button>Remove</Button>
+                <Button x:Name="AddButton">Add</Button>
+                <Button x:Name="EditButton">Edit</Button>
+                <Button x:Name="RemoveButton">Remove</Button>
             </StackPanel>
         </Grid>
     </Grid>

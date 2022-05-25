@@ -13,6 +13,7 @@ namespace PNote.Core
         public string Content { get; private set; }
         public DateTime DateAdded { get; private set; }
         public DateTime Deadline { get; private set; }
+        public bool IsPinned { get; set; }
 
         public Note(string name, string content, DateTime deadline)
         {
@@ -21,6 +22,7 @@ namespace PNote.Core
             this.Content = content;
             this.DateAdded = DateTime.Now;
             this.Deadline = deadline;
+            this.IsPinned = false;
         }
     }
 }

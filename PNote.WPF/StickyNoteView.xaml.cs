@@ -23,6 +23,7 @@ namespace PNote
         private Point _lastPos;
 
         public Note Note { get; set; }
+        public event EventHandler Closed;
 
         public StickyNoteView(Note note, Canvas parent)
         {
@@ -35,6 +36,14 @@ namespace PNote
             this.MouseLeftButtonDown += StickyNoteView_MouseLeftButtonDown;
             this.MouseLeftButtonUp += StickyNoteView_MouseLeftButtonUp;
             this.MouseMove += StickyNoteView_MouseMove;
+
+            this.CloseButton.Click += CloseButton_Click;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this._parent.Children.Remove(this);       
+            Closed.Invoke(this, new EventArgs());
         }
 
         private void StickyNoteView_MouseMove(object sender, MouseEventArgs e)
@@ -65,6 +74,10 @@ namespace PNote
 
             this._lastPos = Mouse.GetPosition(this._parent);
             this.CaptureMouse();
+            foreach (UIElement child in this._parent.Children)
+                Canvas.SetZIndex(child, 0);
+            
+            Canvas.SetZIndex(this, 1);
         }
     }
 }

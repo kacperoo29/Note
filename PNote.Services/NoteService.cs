@@ -1,4 +1,5 @@
-﻿using PNote.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using PNote.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,51 @@ namespace PNote.Services
 {
     public class NoteService : INoteService
     {
-        public List<Note> GetNotes()
+        private readonly PNoteDbContext _db;
+        private DbSet<Note> NoteDbSet { get => _db.Set<Note>(); }
+
+        public NoteService(PNoteDbContext db)
         {
-            return new List<Note>() 
-            {
-                new Note("Note1", "Description1", DateTime.Now.AddDays(1)),
-                new Note("Note2", "Description2", DateTime.Now.AddDays(2)),
-                new Note("Note3", "Description3", DateTime.Now.AddDays(3)),
-                new Note("Note4", "Description4", DateTime.Now.AddDays(4)),
-            };
+            _db = db;
+        }
+
+        public async Task<List<Note>> GetNotesAsync(CancellationToken cancellationToken = default)
+        {
+            return await NoteDbSet.ToListAsync(cancellationToken);
+        }
+
+        public async Task<Note?> GetNoteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await NoteDbSet.FindAsync(id, cancellationToken);
+        }
+
+        public async Task<List<Note>> GetPinnedNotes(CancellationToken cancellationToken = default)
+        {
+            return await NoteDbSet.Where(x => x.IsPinned).ToListAsync(cancellationToken);
+        }
+
+        public async Task<Note> AddNoteAsync(Note note, CancellationToken cancellationToken = default)
+        {
+            var entity = (await NoteDbSet.AddAsync(note, cancellationToken)).Entity;
+
+            await _db.SaveChangesAsync(cancellationToken);
+
+            return entity;
+        }
+
+        public async Task<Note> EditNoteAsync(Note note, CancellationToken cancellationToken = default)
+        {
+            _db.Entry(note).State = EntityState.Modified;
+            await _db.SaveChangesAsync(cancellationToken);
+
+            return note;
+        }
+
+        public async Task RemoveNoteAsync(Note note, CancellationToken cancellationToken = default)
+        {
+            NoteDbSet.Remove(note);
+
+            await _db.SaveChangesAsync(cancellationToken);
         }
     }
 }

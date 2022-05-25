@@ -6,12 +6,23 @@
              xmlns:local="clr-namespace:PNote"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
-    <Grid Background="Yellow">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="{Binding Name}" />
-        <TextBlock Grid.Row="1" Height="Auto" Text="{Binding Content}" />
-    </Grid>
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <Grid Background="Yellow">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="LightGray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="{Binding Name}" />
+                    <Button x:Name="CloseButton" Grid.Column="1" Content="X" />
+                </Grid>
+            </Border>
+            <TextBlock Margin="5" Grid.Row="1" Height="Auto" Text="{Binding Content}" />
+        </Grid>
+    </Border>
 </UserControl>

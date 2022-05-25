@@ -15,7 +15,6 @@ namespace PNote.Services
         public PNoteDbContext(DbContextOptions options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
     }
 }
