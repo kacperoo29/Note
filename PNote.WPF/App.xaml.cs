@@ -21,6 +21,10 @@ namespace PNote
             IServiceCollection services = new ServiceCollection();
             this.ConfigureServices(services);
             this._serviceProvider = services.BuildServiceProvider();
+
+            using var scope = this._serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<PNoteDbContext>();
+            dbContext.Database.Migrate();
         }
 
         private void ConfigureServices(IServiceCollection services)
