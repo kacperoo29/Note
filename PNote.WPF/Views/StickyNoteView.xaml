@@ -1,11 +1,20 @@
-﻿<UserControl x:Class="PNote.StickyNoteView"
+﻿<UserControl x:Class="PNote.Views.StickyNoteView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PNote"
+             xmlns:local="clr-namespace:PNote.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="200" d:DesignWidth="200"
+             DataContext="{Binding Source={StaticResource Locator}, Path=StickyNoteViewModel}">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+    </UserControl.Resources>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid Background="Yellow">
             <Grid.RowDefinitions>
@@ -18,11 +27,11 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Label Content="{Binding Name}" />
+                    <Label Content="{Binding Name,Path=Note.Name}" />
                     <Button x:Name="CloseButton" Grid.Column="1" Content="X" />
                 </Grid>
             </Border>
-            <TextBlock Margin="5" Grid.Row="1" Height="Auto" Text="{Binding Content}" />
+            <TextBlock Margin="5" Grid.Row="1" Height="Auto" Text="{Binding Content,Path=Note.Content}" />
         </Grid>
     </Border>
 </UserControl>

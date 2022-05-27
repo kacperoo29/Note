@@ -1,37 +1,25 @@
 ﻿using PNote.Core;
+using PNote.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace PNote
+namespace PNote.Views
 {
     public partial class StickyNoteView : UserControl
     {
-        private Canvas _parent;
         private bool _isDragging;
         private Point _lastPos;
 
-        public Note Note { get; set; }
-        public event EventHandler Closed;
-
-        public StickyNoteView(Note note, Canvas parent)
+        public StickyNoteView()
         {
             InitializeComponent();
-
-            this.Note = note;
-            this._parent = parent;
-            this.DataContext = this.Note;
 
             this.MouseLeftButtonDown += StickyNoteView_MouseLeftButtonDown;
             this.MouseLeftButtonUp += StickyNoteView_MouseLeftButtonUp;
@@ -42,8 +30,8 @@ namespace PNote
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this._parent.Children.Remove(this);       
-            Closed.Invoke(this, new EventArgs());
+            (this.Parent as Canvas)?.Children.Remove(this);
+            (this.DataContext as StickyNoteViewModel)?.UnstickNote().Wait();
         }
 
         private void StickyNoteView_MouseMove(object sender, MouseEventArgs e)
@@ -51,13 +39,36 @@ namespace PNote
             if (!this._isDragging)
                 return;
 
-            Point newPoint = Mouse.GetPosition(this._parent);
+            var parent = this.Parent as Canvas;
+            if (parent == null)
+                return;
+
+            Point newPoint = Mouse.GetPosition(parent);
 
             double top = Canvas.GetTop(this);
             double left = Canvas.GetLeft(this);
+            double bottom = top + this.ActualHeight;
+            double right = left + this.ActualWidth;
 
-            Canvas.SetTop(this, top + (newPoint.Y - this._lastPos.Y));
-            Canvas.SetLeft(this, left + (newPoint.X - this._lastPos.X));
+            double newTop = top + (newPoint.Y - this._lastPos.Y);
+            double newLeft = left + (newPoint.X - this._lastPos.X);
+            double newBottom = bottom + (newPoint.Y - this._lastPos.Y);
+            double newRight  = right + (newPoint.X - this._lastPos.X);
+
+            if (newRight > parent.ActualWidth)
+                newLeft = parent.ActualWidth - this.ActualWidth;
+
+            if (newBottom > parent.ActualHeight)
+                newTop = parent.ActualHeight - this.ActualHeight;
+
+            if (newLeft < 0)
+                newLeft = 0;
+
+            if (newTop < 0)
+                newTop = 0;
+
+            Canvas.SetTop(this, newTop);
+            Canvas.SetLeft(this, newLeft);
 
             this._lastPos = newPoint;
         }
@@ -72,11 +83,11 @@ namespace PNote
         {
             this._isDragging = true;
 
-            this._lastPos = Mouse.GetPosition(this._parent);
+            this._lastPos = Mouse.GetPosition(this.Parent as UIElement);
             this.CaptureMouse();
-            foreach (UIElement child in this._parent.Children)
+            foreach (UIElement child in (this.Parent as Canvas)?.Children)
                 Canvas.SetZIndex(child, 0);
-            
+
             Canvas.SetZIndex(this, 1);
         }
     }

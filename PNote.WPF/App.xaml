@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:PNote"
              Startup="OnStartup">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <vm:ViewModelLocator
+                xmlns:vm="clr-namespace:PNote.ViewModels"
+                x:Key="Locator" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

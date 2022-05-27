@@ -2,33 +2,30 @@
 using Microsoft.Extensions.DependencyInjection;
 using PNote.Core;
 using PNote.Services;
+using PNote.ViewModels;
+using PNote.Views;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace PNote
 {
     public partial class App : Application
     {
-        private readonly IServiceProvider _serviceProvider;
+        public static IServiceProvider? ServiceProvider { get; set; }
 
         public App()
         {
             IServiceCollection services = new ServiceCollection();
             this.ConfigureServices(services);
-            this._serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
 
-            using var scope = this._serviceProvider.CreateScope();
+            using var scope = ServiceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<PNoteDbContext>();
             try
             {
                 dbContext.Database.Migrate();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -43,11 +40,15 @@ namespace PNote
             services.AddScoped<INoteService, NoteService>();
 
             services.AddSingleton<MainWindow>();
+            services.AddTransient<MainWindowViewModel>();
+
+            services.AddTransient<StickyNoteView>();
+            services.AddTransient<StickyNoteViewModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            this._serviceProvider.GetService<MainWindow>()?.Show();
+            ServiceProvider?.GetService<MainWindow>()?.Show();
         }
     }
 }

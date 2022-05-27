@@ -1,11 +1,18 @@
-﻿<Window x:Class="PNote.MainWindow"
+﻿<Window x:Class="PNote.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PNote"
+        xmlns:local="clr-namespace:PNote.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowViewModel}">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Margin" Value="2" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -14,10 +21,10 @@
         <Canvas x:Name="StickyNoteCanvas" Grid.Column="0" />
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ListView x:Name="NoteListView" Grid.Row="0">
+            <ListView x:Name="NoteListView" Grid.Row="0" ItemsSource="{Binding Notes}">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
@@ -40,9 +47,9 @@
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Row="1">
-                <Button x:Name="AddButton">Add</Button>
+                <Button x:Name="AddButton" Command="{Binding AddNote}">Add</Button>
                 <Button x:Name="EditButton">Edit</Button>
-                <Button x:Name="RemoveButton">Remove</Button>
+                <Button x:Name="RemoveButton" Command="{Binding RemoveNote}" CommandParameter="{Binding ElementName=NoteListView, Path=SelectedItem}">Remove</Button>
             </StackPanel>
         </Grid>
     </Grid>
