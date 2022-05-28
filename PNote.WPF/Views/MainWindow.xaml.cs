@@ -1,4 +1,5 @@
 ﻿using PNote.Core;
+using PNote.Styles;
 using PNote.ViewModels;
 using System.Collections.Specialized;
 using System.Windows;
@@ -22,6 +23,15 @@ namespace PNote.Views
             }
 
             this.StickyNoteCanvas.SizeChanged += StickyNoteCanvas_SizeChanged;
+
+            this.ChangeThemeButton.Click += ChangeThemeButton_Click;
+        }
+
+        private void ChangeThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var app = Application.Current as App;
+            if (app != null)
+                app.ChangeTheme(app.CurrentStyle == StyleType.Light ? StyleType.Dark : StyleType.Light);
         }
 
         private void StickyNoteCanvas_SizeChanged(object sender, SizeChangedEventArgs e)

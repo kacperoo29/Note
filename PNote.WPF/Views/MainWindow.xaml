@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PNote.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        Style="{DynamicResource GlobalWindowStyle}"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowViewModel}">
     <Window.Resources>
         <Style TargetType="Button">
@@ -13,44 +14,56 @@
             <Setter Property="Margin" Value="2" />
         </Style>
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Canvas x:Name="StickyNoteCanvas" Grid.Column="0" />
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <ListView x:Name="NoteListView" Grid.Row="0" ItemsSource="{Binding Notes}">
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-                            <GridViewColumn Header="Name">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Deadline">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Deadline}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <StackPanel Grid.Row="1">
-                <Button x:Name="AddButton" Command="{Binding AddNote}">Add</Button>
-                <Button x:Name="EditButton">Edit</Button>
-                <Button x:Name="RemoveButton" Command="{Binding RemoveNote}" CommandParameter="{Binding ElementName=NoteListView, Path=SelectedItem}">Remove</Button>
-            </StackPanel>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"/>
+            <Button x:Name="ChangeThemeButton" Grid.Column="1" >
+                <Image Height="12" Source="{DynamicResource StyleToggleImage}" />
+            </Button>
         </Grid>
-    </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Canvas x:Name="StickyNoteCanvas" Grid.Column="0" />
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ListView x:Name="NoteListView" Grid.Row="0" ItemsSource="{Binding Notes}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Name">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Deadline">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Deadline}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Grid.Row="1">
+                    <Button x:Name="AddButton" Command="{Binding AddNote}">Add</Button>
+                    <Button x:Name="EditButton">Edit</Button>
+                    <Button x:Name="RemoveButton" Command="{Binding RemoveNote}" CommandParameter="{Binding ElementName=NoteListView, Path=SelectedItem}">Remove</Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
