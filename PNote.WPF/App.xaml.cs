@@ -34,7 +34,9 @@ namespace PNote
         {
             services.AddDbContext<PNoteDbContext>(opt =>
             {
-                opt.UseSqlite("Data source=pnote.db");
+                opt
+                    .UseLazyLoadingProxies()
+                    .UseSqlite("Data source=pnote.db");
             });
 
             services.AddScoped<INoteService, NoteService>();

@@ -63,20 +63,20 @@ namespace PNote.ViewModels
             canvas.Children.Clear();
             foreach (var note in StickedNotes)
             {
-                CreateStickyNoteView(canvas, note);
+                this.CreateStickyNoteView(canvas, note);
             }
         }
 
         public async Task StickNote(Canvas canvas, Note note)
         {
-            if (note.IsPinned)
+            if (note.PinnedNote != null)
                 return;
+
+            note.Pin();
+            await this._noteService.EditNoteAsync(note);
 
             this.CreateStickyNoteView(canvas, note);
             this.StickedNotes.Add(note);
-
-            note.IsPinned = true;
-            await this._noteService.EditNoteAsync(note);
         }
 
         private void CreateStickyNoteView(Canvas canvas, Note note)
@@ -90,8 +90,8 @@ namespace PNote.ViewModels
                 return;
 
             viewModel.Note = note;
-            Canvas.SetTop(stickyNote, 10);
-            Canvas.SetLeft(stickyNote, 10);
+            Canvas.SetTop(stickyNote, note.PinnedNote?.X ?? 10);
+            Canvas.SetLeft(stickyNote, note.PinnedNote?.Y ?? 10);
             stickyNote.Height = 200;
             stickyNote.Width = 200;
 

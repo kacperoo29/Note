@@ -12,6 +12,7 @@ namespace PNote.Services
     {
         private readonly PNoteDbContext _db;
         private DbSet<Note> NoteDbSet { get => _db.Set<Note>(); }
+        private DbSet<PinnedNote> PinnedNoteDbSet { get => _db.Set<PinnedNote>(); }
 
         public NoteService(PNoteDbContext db)
         {
@@ -30,7 +31,7 @@ namespace PNote.Services
 
         public async Task<List<Note>> GetPinnedNotes(CancellationToken cancellationToken = default)
         {
-            return await NoteDbSet.Where(x => x.IsPinned).ToListAsync(cancellationToken);
+            return await PinnedNoteDbSet.Select(x => x.Note).ToListAsync(cancellationToken);
         }
 
         public async Task<Note> AddNoteAsync(Note note, CancellationToken cancellationToken = default)

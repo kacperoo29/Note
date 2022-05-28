@@ -55,6 +55,8 @@ namespace PNote.Views
 
                 Canvas.SetTop(uiChild, newTop);
                 Canvas.SetLeft(uiChild, newLeft);
+
+                ((uiChild as StickyNoteView)?.DataContext as StickyNoteViewModel)?.SavePosition(newTop, newLeft);
             }
         }
 

@@ -31,7 +31,13 @@ namespace PNote.ViewModels
             if (this.Note == null)
                 return;
 
-            this.Note.IsPinned = false;
+            this.Note.Unpin();
+            await this._noteService.EditNoteAsync(this.Note);
+        }
+
+        public async Task SavePosition(double x, double y)
+        {
+            this.Note?.PinnedNote?.SetPosition(x, y);
             await this._noteService.EditNoteAsync(this.Note);
         }
     }

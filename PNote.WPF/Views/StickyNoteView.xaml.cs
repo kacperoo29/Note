@@ -77,6 +77,10 @@ namespace PNote.Views
         {
             this._isDragging = false;
             this.ReleaseMouseCapture();
+
+            double top = Canvas.GetTop(this);
+            double left = Canvas.GetLeft(this);
+            (this.DataContext as StickyNoteViewModel)?.SavePosition(top, left);
         }
 
         private void StickyNoteView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

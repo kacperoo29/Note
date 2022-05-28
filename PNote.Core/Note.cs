@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PNote.Core
 {
@@ -13,7 +9,8 @@ namespace PNote.Core
         public string Content { get; private set; }
         public DateTime DateAdded { get; private set; }
         public DateTime Deadline { get; private set; }
-        public bool IsPinned { get; set; }
+
+        public virtual PinnedNote PinnedNote { get; private set; }
 
         public Note(string name, string content, DateTime deadline)
         {
@@ -22,7 +19,19 @@ namespace PNote.Core
             this.Content = content;
             this.DateAdded = DateTime.Now;
             this.Deadline = deadline;
-            this.IsPinned = false;
+        }
+
+        public void Pin()
+        {
+            if (this.PinnedNote != null)
+                return;
+
+            this.PinnedNote = new PinnedNote(10, 10, this);
+        }
+
+        public void Unpin()
+        {
+            this.PinnedNote = null;
         }
     }
 }
