@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PNote.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PNote.Services
 {
@@ -56,6 +51,11 @@ namespace PNote.Services
             NoteDbSet.Remove(note);
 
             await _db.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<Note>> GetNotesByQuery(string query, CancellationToken cancellationToken = default)
+        {
+            return await NoteDbSet.Where(x => x.Content.Contains(query) || x.Name.Contains(query)).ToListAsync();
         }
     }
 }

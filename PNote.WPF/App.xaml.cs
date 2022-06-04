@@ -74,17 +74,21 @@ namespace PNote
             });
 
             services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddSingleton<MainWindow>();
             services.AddTransient<MainWindowViewModel>();
 
             services.AddTransient<StickyNoteView>();
             services.AddTransient<StickyNoteViewModel>();
+
+            services.AddSingleton<UserSelectWindow>();
+            services.AddTransient<UserSelectWindowViewModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            ServiceProvider?.GetService<MainWindow>()?.Show();
+            ServiceProvider?.GetService<UserSelectWindow>()?.Show();
         }
     }
 }

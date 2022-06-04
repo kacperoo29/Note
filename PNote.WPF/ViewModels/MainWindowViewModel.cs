@@ -39,6 +39,17 @@ namespace PNote.ViewModels
 
         }
 
+        private ObservableCollection<Note> _searchNotes;
+        public ObservableCollection<Note> SearchNotes
+        {
+            get => _searchNotes;
+            set
+            {
+                _searchNotes = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchNotes)));
+            }
+        }
+
         private ICommand? _addNote;
         public ICommand AddNote
         {
@@ -56,6 +67,7 @@ namespace PNote.ViewModels
             this._noteService = noteService;
             this._notes = new(this._noteService.GetNotesAsync().Result);
             this._stickedNotes = new(this._noteService.GetPinnedNotes().Result);
+            this._searchNotes = new();
         }
 
         public void RefreshNotes(Canvas canvas)
@@ -77,6 +89,14 @@ namespace PNote.ViewModels
 
             this.CreateStickyNoteView(canvas, note);
             this.StickedNotes.Add(note);
+        }
+
+        public async Task Search(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            this.SearchNotes = new(await this._noteService.GetNotesByQuery(text));
         }
 
         private void CreateStickyNoteView(Canvas canvas, Note note)

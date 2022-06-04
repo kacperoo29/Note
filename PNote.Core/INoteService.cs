@@ -15,5 +15,6 @@ namespace PNote.Core
         Task<Note> AddNoteAsync(Note note, CancellationToken token = default);
         Task<Note> EditNoteAsync(Note note, CancellationToken cancellationToken = default);
         Task RemoveNoteAsync(Note note, CancellationToken cancellationToken = default);
+        Task<List<Note>> GetNotesByQuery(string query, CancellationToken cancellationToken = default);
     }
 }

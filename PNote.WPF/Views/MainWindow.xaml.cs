@@ -82,5 +82,23 @@ namespace PNote.Views
 
             dataContext.StickNote(this.StickyNoteCanvas, note).Wait();
         }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var vm = this.DataContext as MainWindowViewModel;
+            var textBox = sender as TextBox;
+            if (vm == null || textBox == null)
+                return;
+
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                NoteListView.ItemsSource = vm.Notes;
+            }
+            else
+            {
+                vm.Search(textBox.Text).Wait();
+                NoteListView.ItemsSource = vm.SearchNotes;
+            }
+        }
     }
 }

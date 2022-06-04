@@ -140,6 +140,16 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="DefaultLabelText" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryColorText}"/>
+    </Style>
+
+    <Style x:Key="DefaultBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource SecondaryColorLight}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="25" />
+    </Style>
+
     <!--Images-->
     <DrawingImage x:Key="StyleToggleImage">
         <DrawingImage.Drawing>

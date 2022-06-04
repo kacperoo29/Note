@@ -11,13 +11,19 @@ namespace PNote.Core
         public DateTime Deadline { get; private set; }
 
         public virtual PinnedNote PinnedNote { get; private set; }
+        public virtual NoteUser User { get; private set; }
 
-        public Note(string name, string content, DateTime deadline)
+        protected Note()
         {
             this.Id = Guid.NewGuid();
+            this.DateAdded = DateTime.Now;
+        }
+
+        public Note(string name, string content, DateTime deadline)
+            : this()
+        {
             this.Name = name;
             this.Content = content;
-            this.DateAdded = DateTime.Now;
             this.Deadline = deadline;
         }
 

@@ -9,7 +9,7 @@
                 xmlns:vm="clr-namespace:PNote.ViewModels"
                 x:Key="Locator" />
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/LightMode.xaml" />
+                <ResourceDictionary Source="/Styles/DarkMode.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

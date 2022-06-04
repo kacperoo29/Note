@@ -7,13 +7,23 @@ namespace PNote.Core
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
+        public byte[] Avatar { get; private set; }
         public virtual List<Note> Notes { get; private set; }
 
-        public NoteUser(string name)
+        protected NoteUser()
         {
-            this.Id = Guid.NewGuid();
-            this.Name = name;
             this.Notes = new List<Note>();
+            this.Id = Guid.NewGuid();
+        }
+
+        public NoteUser(string name, byte[] avatar = null)
+            : this()
+        {
+            this.Name = name;
+            if (avatar != null)
+                this.Avatar = avatar;
+            else
+                this.Avatar = DefaultAvatarConst.DefaultAvatarBytes;
         }
     }
 }

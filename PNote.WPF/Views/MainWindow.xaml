@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PNote.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Width="1280" Height="720"
+        Title="Notes" Width="1280" Height="720"
         Style="{DynamicResource GlobalWindowStyle}"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowViewModel}">
     <DockPanel>
@@ -14,7 +14,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Style="{DynamicResource SearchBarStyle}" Grid.Column="0" />
+            <TextBox Style="{DynamicResource SearchBarStyle}" Grid.Column="0" TextChanged="SearchBox_TextChanged"/>
             <Button x:Name="ChangeThemeButton" Grid.Column="1" >
                 <Image Height="11" Source="{DynamicResource StyleToggleImage}" />
             </Button>
