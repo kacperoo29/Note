@@ -8,6 +8,8 @@ namespace PNote.Services
         private readonly PNoteDbContext _context;
         private DbSet<NoteUser> Users { get => _context.Set<NoteUser>(); }
 
+        public NoteUser? CurrentUser { get; private set; }
+
         public UserService(PNoteDbContext context)
         {
             this._context = context;
@@ -25,6 +27,14 @@ namespace PNote.Services
             await _context.SaveChangesAsync(cancellationToken);
 
             return entity;
+        }
+
+        public NoteUser SetCurrentUser(NoteUser user)
+        {
+            if (this.CurrentUser == null)
+                this.CurrentUser = user;
+
+            return this.CurrentUser;
         }
     }
 }

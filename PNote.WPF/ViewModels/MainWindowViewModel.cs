@@ -14,7 +14,8 @@ namespace PNote.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private INoteService _noteService;
+        private readonly INoteService _noteService;
+        private readonly IUserService _userService;
 
         private ObservableCollection<Note> _notes;
         public ObservableCollection<Note> Notes
@@ -62,9 +63,11 @@ namespace PNote.ViewModels
             get => _removeNote ?? (_removeNote = new CommandHandler((p) => HandleRemoveNote(p), () => Notes.Count > 0));
         }
 
-        public MainWindowViewModel(INoteService noteService)
+        public MainWindowViewModel(INoteService noteService, IUserService userService)
         {
             this._noteService = noteService;
+            this._userService = userService;
+
             this._notes = new(this._noteService.GetNotesAsync().Result);
             this._stickedNotes = new(this._noteService.GetPinnedNotes().Result);
             this._searchNotes = new();
@@ -120,7 +123,11 @@ namespace PNote.ViewModels
 
         private async void HandleAddNote(object? parameter)
         {
-            Note note = await this._noteService.AddNoteAsync(new Note("Test note", "Test contents", DateTime.Now.AddDays(1)));
+            Note note = new Note("Test note", "Test contents", DateTime.Now.AddDays(1));
+            note.SetUser(this._userService.CurrentUser ?? throw new Exception("Current user is not set."));
+
+            await this._noteService.AddNoteAsync(note);
+
             this.Notes.Add(note);
         }
 

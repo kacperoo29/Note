@@ -6,17 +6,22 @@ namespace PNote.Services
     public class NoteService : INoteService
     {
         private readonly PNoteDbContext _db;
+        private readonly IUserService _userService;
+
         private DbSet<Note> NoteDbSet { get => _db.Set<Note>(); }
         private DbSet<PinnedNote> PinnedNoteDbSet { get => _db.Set<PinnedNote>(); }
 
-        public NoteService(PNoteDbContext db)
+        public NoteService(PNoteDbContext db, IUserService userService)
         {
             _db = db;
+            _userService = userService;
         }
 
         public async Task<List<Note>> GetNotesAsync(CancellationToken cancellationToken = default)
         {
-            return await NoteDbSet.ToListAsync(cancellationToken);
+            return await NoteDbSet
+                .Where(n => n.User.Id == this._userService.CurrentUser.Id)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Note?> GetNoteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -26,7 +31,10 @@ namespace PNote.Services
 
         public async Task<List<Note>> GetPinnedNotes(CancellationToken cancellationToken = default)
         {
-            return await PinnedNoteDbSet.Select(x => x.Note).ToListAsync(cancellationToken);
+            return await PinnedNoteDbSet
+                .Where(n => n.Note.User.Id == this._userService.CurrentUser.Id)
+                .Select(x => x.Note)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Note> AddNoteAsync(Note note, CancellationToken cancellationToken = default)
@@ -55,7 +63,9 @@ namespace PNote.Services
 
         public async Task<List<Note>> GetNotesByQuery(string query, CancellationToken cancellationToken = default)
         {
-            return await NoteDbSet.Where(x => x.Content.Contains(query) || x.Name.Contains(query)).ToListAsync();
+            return await NoteDbSet
+                .Where(x => (x.Content.Contains(query) || x.Name.Contains(query)) && x.User.Id == this._userService.CurrentUser.Id)
+                .ToListAsync();
         }
     }
 }

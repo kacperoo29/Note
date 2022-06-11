@@ -27,6 +27,11 @@ namespace PNote.Core
             this.Deadline = deadline;
         }
 
+        public void SetUser(NoteUser user)
+        {
+            this.User = user;
+        }
+
         public void Pin()
         {
             if (this.PinnedNote != null)

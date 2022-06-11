@@ -34,6 +34,11 @@ namespace PNote.ViewModels
             this._users = new(this._userService.GetUsers().Result);
         }
 
+        public void Login(NoteUser user)
+        {
+            this._userService.SetCurrentUser(user);
+        }
+
         private void HandleAddUser(object? param)
         {
             var user = this._userService.AddUser(new NoteUser("Test name")).Result;
