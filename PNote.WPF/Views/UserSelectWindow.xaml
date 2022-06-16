@@ -50,6 +50,6 @@
         </ScrollViewer>
         <Button Grid.Row="1" Content="Add new User"
                 Style="{DynamicResource GlobalButtonStyle}"
-                Command="{Binding AddUser}"/>
+                Click="AddUser_Click" />
     </Grid>
 </Window>

@@ -1,7 +1,9 @@
-﻿using PNote.Core;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PNote.Core;
 using PNote.Styles;
 using PNote.ViewModels;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -99,6 +101,38 @@ namespace PNote.Views
                 vm.Search(textBox.Text).Wait();
                 NoteListView.ItemsSource = vm.SearchNotes;
             }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addNoteWindow = App.ServiceProvider?.GetService<AddNoteWindow>();
+            if (addNoteWindow == null)
+                return;
+
+            addNoteWindow.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                var viewModel = addNoteWindow.DataContext as AddNoteViewModel;
+
+                if (viewModel == null)
+                    return;
+
+                if (!viewModel.Added)
+                    return;
+
+                (this.DataContext as MainWindowViewModel)?.Notes.Add(viewModel.Note!);
+            };
+
+            this.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                addNoteWindow.Close();
+            };
+
+            addNoteWindow.Show();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

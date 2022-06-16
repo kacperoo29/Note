@@ -30,7 +30,11 @@
                     <Button x:Name="CloseButton" Grid.Column="1" Content="X" />
                 </Grid>
             </Border>
-            <TextBlock Margin="5" Grid.Row="1" Height="Auto" Text="{Binding Path=Note.Content}" />
+            <TextBlock Margin="5" 
+                       Grid.Row="1" 
+                       Height="Auto" 
+                       TextWrapping="Wrap"
+                       Text="{Binding Path=Note.Content}" />
         </Grid>
     </Border>
 </UserControl>

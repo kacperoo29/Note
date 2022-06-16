@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
     <!--Colors-->
     <SolidColorBrush x:Key="PrimaryColor" Color="#424242" />
@@ -15,7 +16,7 @@
 
     <SolidColorBrush x:Key="PlaceholderTextColor" Color="#aaaaaa" />
 
-    <!--Styles--> 
+    <!--Styles-->
     <Style x:Key="GlobalWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="Background" Value="{StaticResource PrimaryColor}" />
     </Style>
@@ -42,6 +43,9 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource SecondaryColorLight}" />
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource PrimaryColorLight}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 
@@ -49,7 +53,7 @@
         <Style.Resources>
             <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                 <VisualBrush.Visual>
-                    <Label Content="Type to search" Foreground="{StaticResource PlaceholderTextColor}" />                    
+                    <Label Content="Type to search" Foreground="{StaticResource PlaceholderTextColor}" />
                 </VisualBrush.Visual>
             </VisualBrush>
         </Style.Resources>
@@ -150,6 +154,31 @@
         <Setter Property="CornerRadius" Value="25" />
     </Style>
 
+    <Style x:Key="DefaultTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{StaticResource PrimaryColorText}" />
+        <Setter Property="Background" Value="{StaticResource PrimaryColorLight}" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+    </Style>
+
+    <Style x:Key="DefaultValidationItemsControlStyle" TargetType="{x:Type ItemsControl}">
+        <Setter Property="Background" Value="{StaticResource PrimaryColor}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryColorText}" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Self},
+                                      Path=(Validation.ValidationAdornerSiteFor).(Validation.Errors)}" />
+        <Setter Property="DisplayMemberPath" Value="ErrorContent" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+    </Style>
+
+    <Style x:Key="DefaultDatePickerStyle" TargetType="{x:Type xctk:DateTimePicker}">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Background" Value="{StaticResource PrimaryColorLight}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryColorText}" />
+    </Style>
+
     <!--Images-->
     <DrawingImage x:Key="StyleToggleImage">
         <DrawingImage.Drawing>
@@ -158,5 +187,5 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    
+
 </ResourceDictionary>

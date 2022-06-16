@@ -20,7 +20,7 @@ namespace PNote.Services
         public async Task<List<Note>> GetNotesAsync(CancellationToken cancellationToken = default)
         {
             return await NoteDbSet
-                .Where(n => n.User.Id == this._userService.CurrentUser.Id)
+                .Where(n => n.User.Id == this._userService.CurrentUser!.Id)
                 .ToListAsync(cancellationToken);
         }
 
@@ -32,13 +32,15 @@ namespace PNote.Services
         public async Task<List<Note>> GetPinnedNotes(CancellationToken cancellationToken = default)
         {
             return await PinnedNoteDbSet
-                .Where(n => n.Note.User.Id == this._userService.CurrentUser.Id)
+                .Where(n => n.Note.User.Id == this._userService.CurrentUser!.Id)
                 .Select(x => x.Note)
                 .ToListAsync(cancellationToken);
         }
 
         public async Task<Note> AddNoteAsync(Note note, CancellationToken cancellationToken = default)
         {
+            note.SetUser(this._userService.CurrentUser);
+
             var entity = (await NoteDbSet.AddAsync(note, cancellationToken)).Entity;
 
             await _db.SaveChangesAsync(cancellationToken);

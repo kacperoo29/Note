@@ -49,7 +49,7 @@ namespace PNote
             switch (style)
             {
                 case StyleType.Light:
-                    path = "/Styles/LightMode.xaml";                    
+                    path = "/Styles/LightMode.xaml";
                     break;
                 case StyleType.Dark:
                     path = "/Styles/DarkMode.xaml";
@@ -84,6 +84,12 @@ namespace PNote
 
             services.AddSingleton<UserSelectWindow>();
             services.AddTransient<UserSelectWindowViewModel>();
+
+            services.AddTransient<AddUserWindow>();
+            services.AddTransient<AddUserWindowViewModel>();
+
+            services.AddTransient<AddNoteWindow>();
+            services.AddTransient<AddNoteViewModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)

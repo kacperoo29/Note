@@ -2,6 +2,7 @@
 using PNote.Core;
 using PNote.ViewModels;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -27,6 +28,33 @@ namespace PNote.Views
             App.ServiceProvider?.GetService<MainWindow>()?.Show();
 
             this.Close();
+        }
+
+        private void AddUser_Click(object sender, RoutedEventArgs e)
+        {
+            var addUserWindow = App.ServiceProvider?.GetService<AddUserWindow>();
+            if (addUserWindow == null)
+                return;
+
+            addUserWindow.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                var viewModel = addUserWindow.DataContext as AddUserWindowViewModel;
+
+                if (viewModel == null)
+                    return;
+
+                if (!viewModel.Created)
+                    return;
+
+                (this.DataContext as UserSelectWindowViewModel)?.Users.Add(viewModel.User!);
+            };
+
+            this.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                addUserWindow.Close();
+            };
+
+            addUserWindow.Show();
         }
     }
 }

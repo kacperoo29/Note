@@ -1,0 +1,89 @@
+﻿<Window x:Class="PNote.Views.AddNoteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PNote.Views" 
+        xmlns:vr="clr-namespace:PNote.ValidationRules" 
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="AddMovieWindow" Height="360" Width="400" ResizeMode="NoResize" 
+        Style="{DynamicResource GlobalWindowStyle}"
+        DataContext="{Binding Source={StaticResource Locator}, Path=AddMovieWindowViewModel}">
+    <StackPanel>
+        <StackPanel Validation.ValidationAdornerSite="{Binding ElementName=ErrorDisplay}" 
+                    Validation.ErrorTemplate="{x:Null}">
+            <FrameworkElement.BindingGroup>
+                <BindingGroup Name="FormBindingGroup" />
+            </FrameworkElement.BindingGroup>
+            <Label Style="{DynamicResource DefaultLabelText}">Name</Label>
+            <TextBox Name="NoteNameTextBox"
+                    Style="{DynamicResource DefaultTextBoxStyle}">
+                <TextBox.Text>
+                    <Binding Path="Name" 
+                         UpdateSourceTrigger="PropertyChanged"
+                         BindingGroupName="FormBindingGroup">
+                        <Binding.ValidationRules>
+                            <vr:NonEmptyStringValidationRule FieldName="Name"
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Style="{DynamicResource DefaultLabelText}">Description</Label>
+            <TextBox Name="NoteDescriptionTextBox"
+                    Style="{DynamicResource DefaultTextBoxStyle}">
+                <TextBox.Text>
+                    <Binding Path="Description" 
+                         UpdateSourceTrigger="PropertyChanged"
+                         BindingGroupName="FormBindingGroup">
+                        <Binding.ValidationRules>
+                            <vr:NonEmptyStringValidationRule FieldName="Description"
+                                ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Style="{DynamicResource DefaultLabelText}">Deadline</Label>
+            <xctk:DateTimePicker Name="DeadlineDatePicker"
+                        Style="{DynamicResource DefaultDatePickerStyle}">
+                <xctk:DateTimePicker.Value>
+                    <Binding Path="Deadline"
+                        UpdateSourceTrigger="PropertyChanged"
+                        BindingGroupName="FormBindingGroup">
+                        <Binding.ValidationRules>
+                            <vr:PickedDateValidationRule
+                                ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:DateTimePicker.Value>
+            </xctk:DateTimePicker>
+            <ItemsControl x:Name="ErrorDisplay" 
+                          Style="{DynamicResource DefaultValidationItemsControlStyle}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button
+                Content="Add note" 
+                Command="{Binding AddNote}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource GlobalButtonStyle}">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=NoteNameTextBox, Path=(Validation.HasError) }" Value="False" />
+                                    <Condition Binding="{Binding ElementName=NoteDescriptionTextBox, Path=(Validation.HasError) }" Value="False" />
+                                    <Condition Binding="{Binding ElementName=DeadlineDatePicker, Path=(Validation.HasError) }" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Style="{DynamicResource GlobalButtonStyle}"
+                Content="Cancel" 
+                Click="Cancel_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

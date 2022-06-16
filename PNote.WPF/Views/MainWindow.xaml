@@ -32,8 +32,8 @@
                 </Grid.RowDefinitions>
                 <ListView x:Name="NoteListView" Grid.Row="0" ItemsSource="{Binding Notes}" Style="{DynamicResource NoteListBoxStyle}" />
                 <StackPanel Grid.Row="1">
-                    <Button Style="{DynamicResource GlobalButtonStyle}" x:Name="AddButton" Command="{Binding AddNote}" Content="Add" />
-                    <Button Style="{DynamicResource GlobalButtonStyle}" x:Name="EditButton">Edit</Button>
+                    <Button Style="{DynamicResource GlobalButtonStyle}" x:Name="AddButton" Click="AddButton_Click" Content="Add" />
+                    <Button Style="{DynamicResource GlobalButtonStyle}" x:Name="EditButton" Click="EditButton_Click">Edit</Button>
                     <Button Style="{DynamicResource GlobalButtonStyle}" x:Name="RemoveButton" Command="{Binding RemoveNote}" CommandParameter="{Binding ElementName=NoteListView, Path=SelectedItem}">Remove</Button>
                 </StackPanel>
             </Grid>

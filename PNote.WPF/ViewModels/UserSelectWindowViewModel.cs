@@ -22,12 +22,6 @@ namespace PNote.ViewModels
             }
         }
 
-        private ICommand? _addUser;
-        public ICommand AddUser
-        {
-            get => _addUser ?? (_addUser = new CommandHandler((p) => HandleAddUser(p), () => true));
-        }
-
         public UserSelectWindowViewModel(IUserService userService)
         {
             this._userService = userService;
@@ -37,13 +31,6 @@ namespace PNote.ViewModels
         public void Login(NoteUser user)
         {
             this._userService.SetCurrentUser(user);
-        }
-
-        private void HandleAddUser(object? param)
-        {
-            var user = this._userService.AddUser(new NoteUser("Test name")).Result;
-
-            this.Users.Add(user);
         }
     }
 }
