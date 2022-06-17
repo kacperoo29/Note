@@ -13,11 +13,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox Style="{DynamicResource SearchBarStyle}" Grid.Column="0" TextChanged="SearchBox_TextChanged"/>
-            <Button x:Name="ChangeThemeButton" Grid.Column="1" >
+            <Button x:Name="ChangeThemeButton" 
+                    Style="{DynamicResource GlobalButtonStyle}" 
+                    Grid.Column="1" >
                 <Image Height="11" Source="{DynamicResource StyleToggleImage}" />
             </Button>
+            <Button Style="{DynamicResource GlobalButtonStyle}" 
+                    Content="Print" 
+                    Grid.Column="2"
+                    Click="PrintButton_Click" />
         </Grid>
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>

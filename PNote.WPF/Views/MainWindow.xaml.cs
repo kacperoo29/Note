@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Linq;
+using System;
 
 namespace PNote.Views
 {
@@ -163,6 +164,23 @@ namespace PNote.Views
             };
 
             editNoteWindow.Show();
+        }
+
+        private void PrintButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                PrintDialog printDialog = new PrintDialog();
+
+                if (printDialog.ShowDialog() != true)
+                    return;
+
+                printDialog.PrintVisual(this.StickyNoteCanvas, "Sticky notes");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
