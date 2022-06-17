@@ -66,7 +66,10 @@ namespace PNote.Services
         public async Task<List<Note>> GetNotesByQuery(string query, CancellationToken cancellationToken = default)
         {
             return await NoteDbSet
-                .Where(x => (x.Content.Contains(query) || x.Name.Contains(query)) && x.User.Id == this._userService.CurrentUser.Id)
+                .Where(x => 
+                    (x.Content.ToLower().Contains(query.ToLower()) 
+                        || x.Name.ToLower().Contains(query.ToLower())) 
+                    && x.User.Id == this._userService.CurrentUser!.Id)
                 .ToListAsync();
         }
     }

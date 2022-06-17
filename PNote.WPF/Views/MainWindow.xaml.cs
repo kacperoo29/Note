@@ -2,11 +2,11 @@
 using PNote.Core;
 using PNote.Styles;
 using PNote.ViewModels;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Linq;
 
 namespace PNote.Views
 {
@@ -132,7 +132,37 @@ namespace PNote.Views
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
+            var editNoteWindow = App.ServiceProvider?.GetService<EditNoteWindow>();            
+            if (editNoteWindow == null)
+                return;
 
+            (editNoteWindow.DataContext as EditNoteViewModel)!.Note = NoteListView.SelectedItem as Note;
+            editNoteWindow.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                var viewModel = editNoteWindow.DataContext as EditNoteViewModel;
+
+                if (viewModel == null)
+                    return;
+
+                if (!viewModel.Edited)
+                    return;
+
+                var note = viewModel.Note!;
+                var old = (this.DataContext as MainWindowViewModel)?.Notes.FirstOrDefault(n => n.Id == note.Id);
+                var index = (this.DataContext as MainWindowViewModel)?.Notes.IndexOf(old);
+                (this.DataContext as MainWindowViewModel)!.Notes.Remove(note);
+
+                (this.DataContext as MainWindowViewModel)?.Notes.Insert(index.Value, note);
+                (this.DataContext as MainWindowViewModel)?.RefreshNoteList();
+                (this.DataContext as MainWindowViewModel)?.RefreshNotes(this.StickyNoteCanvas);                
+            };
+
+            this.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                editNoteWindow.Close();
+            };
+
+            editNoteWindow.Show();
         }
     }
 }

@@ -90,6 +90,9 @@ namespace PNote
 
             services.AddTransient<AddNoteWindow>();
             services.AddTransient<AddNoteViewModel>();
+
+            services.AddTransient<EditNoteWindow>();
+            services.AddTransient<EditNoteViewModel>();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)

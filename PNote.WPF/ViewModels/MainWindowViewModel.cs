@@ -51,12 +51,6 @@ namespace PNote.ViewModels
             }
         }
 
-        private ICommand? _addNote;
-        public ICommand AddNote
-        {
-            get => _addNote ?? (_addNote = new CommandHandler((p) => HandleAddNote(p), () => true));
-        }
-
         private ICommand? _removeNote;
         public ICommand RemoveNote
         {
@@ -71,6 +65,13 @@ namespace PNote.ViewModels
             this._notes = new(this._noteService.GetNotesAsync().Result);
             this._stickedNotes = new(this._noteService.GetPinnedNotes().Result);
             this._searchNotes = new();
+        }
+
+        public void RefreshNoteList()
+        {
+            //this._notes = new(this._noteService.GetNotesAsync().Result);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Notes)));
+            this._stickedNotes = new(this._noteService.GetPinnedNotes().Result);
         }
 
         public void RefreshNotes(Canvas canvas)
@@ -119,16 +120,6 @@ namespace PNote.ViewModels
             stickyNote.Width = 200;
 
             canvas.Children.Add(stickyNote);
-        }
-
-        private async void HandleAddNote(object? parameter)
-        {
-            Note note = new Note("Test note", "Test contents", DateTime.Now.AddDays(1));
-            note.SetUser(this._userService.CurrentUser ?? throw new Exception("Current user is not set."));
-
-            await this._noteService.AddNoteAsync(note);
-
-            this.Notes.Add(note);
         }
 
         private async void HandleRemoveNote(object? parameter)

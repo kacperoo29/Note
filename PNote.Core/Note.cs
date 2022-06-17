@@ -5,10 +5,10 @@ namespace PNote.Core
     public class Note
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public string Content { get; private set; }
+        public string Name { get; set; }
+        public string Content { get; set; }
         public DateTime DateAdded { get; private set; }
-        public DateTime Deadline { get; private set; }
+        public DateTime Deadline { get; set; }
 
         public virtual PinnedNote PinnedNote { get; private set; }
         public virtual NoteUser User { get; private set; }
